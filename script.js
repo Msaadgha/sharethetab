@@ -1,7 +1,7 @@
 async function processReceipt() {
   const fileInput = document.getElementById('receiptInput');
   const namesInput = document.getElementById('namesInput').value;
-  const names = namesInput.split(',').map(n => n.trim());
+  const names = namesInput.split(',').map(n => n.trim()).filter(n => n);
 
   if (!fileInput.files[0] || names.length === 0) {
     alert("Upload an image and enter names.");
@@ -15,8 +15,16 @@ async function processReceipt() {
 
   document.getElementById('outputText').innerText = "Extracted Text:\n" + text;
 
-  // Parse items and prices using regex
-  const itemLines = text.split('\n').filter(line => /\d+(\.\d{2})?/.test(line));
+  // ❗ Filter out subtotal/tax/tip/total/amount due lines
+  const itemLines = text
+    .split('\n')
+    .map(line => line.trim())
+    .filter(line =>
+      /\d+(\.\d{2})?/.test(line) && // Line contains a price
+      !/subtotal|total|tax|tip|amount due/i.test(line) // Exclude non-item lines
+    );
+
+  // Extract item names and prices
   const items = itemLines.map(line => {
     const match = line.match(/(.*?)(\d+\.\d{2})$/);
     return match ? { name: match[1].trim(), price: parseFloat(match[2]) } : null;
