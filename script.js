@@ -9,15 +9,25 @@ async function processReceipt() {
   }
 
   const loadingIndicator = document.getElementById('loadingIndicator');
+  const loadingText = loadingIndicator.querySelector('p');
   loadingIndicator.style.display = 'block';
+  loadingText.textContent = 'Processing receipt... 0%';
 
   try {
     const image = fileInput.files[0];
-    const result = await Tesseract.recognize(image, 'eng');
-    const text = result.data.text;
 
+    const result = await Tesseract.recognize(image, 'eng', {
+      logger: m => {
+        if (m.status === 'recognizing text') {
+          loadingText.textContent = `Processing receipt... ${Math.round(m.progress * 100)}%`;
+        }
+      }
+    });
+
+    const text = result.data.text;
     document.getElementById('outputText').innerText = "Extracted Text:\n" + text;
 
+    // Filter out subtotal, total, tax, tip lines
     const itemLines = text
       .split('\n')
       .map(line => line.trim())
@@ -48,18 +58,20 @@ async function processReceipt() {
 
     assignmentDiv.dataset.items = JSON.stringify(items);
     document.getElementById('taxTipSection').style.display = 'block';
+
   } catch (error) {
     alert("An error occurred while processing the receipt.");
     console.error(error);
   } finally {
     loadingIndicator.style.display = 'none';
+    fileInput.value = ''; // Reset input for re-upload
   }
 }
 
 function calculateSplit() {
   const items = JSON.parse(document.getElementById('assignments').dataset.items);
   const nameInput = document.getElementById('namesInput').value;
-  const names = nameInput.split(',').map(n => n.trim());
+  const names = nameInput.split(',').map(n => n.trim()).filter(n => n);
 
   const subtotals = {};
   names.forEach(name => { subtotals[name] = 0; });
@@ -87,3 +99,4 @@ function calculateSplit() {
     resultsDiv.innerHTML += `<p>${name}: $${total.toFixed(2)} (Items: $${share.toFixed(2)}, Tax: $${taxShare.toFixed(2)}, Tip: $${tipShare.toFixed(2)})</p>`;
   });
 }
+
