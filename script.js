@@ -27,7 +27,7 @@ async function processReceipt() {
     const text = result.data.text;
     document.getElementById('outputText').innerText = "Extracted Text:\n" + text;
 
-    // Filter out subtotal, total, tax, tip lines
+    // Filter out subtotal, total, tax, tip lines (case insensitive)
     const itemLines = text
       .split('\n')
       .map(line => line.trim())
@@ -66,7 +66,6 @@ async function processReceipt() {
     console.error(error);
   } finally {
     loadingIndicator.style.display = 'none';
-    fileInput.value = ''; // Reset input for re-upload
   }
 }
 
@@ -88,4 +87,18 @@ function calculateSplit() {
   const taxPercent = parseFloat(document.getElementById('taxPercent').value) || 0;
   const tipAmount = parseFloat(document.getElementById('tipAmount').value) || 0;
 
-  const subtotal = Object.values(subtotals).reduce
+  const subtotal = Object.values(subtotals).reduce((a, b) => a + b, 0);
+  const taxAmount = (taxPercent / 100) * subtotal;
+
+  const resultsDiv = document.getElementById('results');
+  resultsDiv.innerHTML = "<h3>Final Amounts</h3>";
+
+  names.forEach(name => {
+    const share = subtotals[name];
+    const taxShare = (share / subtotal) * taxAmount || 0;
+    const tipShare = (share / subtotal) * tipAmount || 0;
+    const total = share + taxShare + tipShare;
+
+    resultsDiv.innerHTML += `<p>${name}: $${total.toFixed(2)} (Items: $${share.toFixed(2)}, Tax: $${taxShare.toFixed(2)}, Tip: $${tipShare.toFixed(2)})</p>`;
+  });
+}
