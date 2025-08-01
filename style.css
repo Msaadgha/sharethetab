@@ -1,0 +1,124 @@
+/* Base Layout */
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(120deg, #d4f3ef, #eef7fa); /* blue-green gradient */
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+.app-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 2.5rem;
+  background-color: #ffffff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  transition: box-shadow 0.3s ease;
+}
+
+.app-container:hover {
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Logo */
+.logo {
+  display: block;
+  margin: 0 auto 1.5rem;
+  width: 100px;
+  transition: transform 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.1);
+}
+
+/* Headings */
+h1 {
+  text-align: center;
+  color: #00796b; /* teal */
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Form Elements */
+label {
+  font-weight: 600;
+  display: block;
+  margin-top: 18px;
+  color: #2c3e50;
+  font-size: 1.1rem;
+}
+
+input[type="file"],
+input[type="number"],
+input[type="text"],
+select {
+  width: 100%;
+  padding: 12px 14px;
+  margin-top: 6px;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 1rem;
+  background-color: #f8fcfe;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #2ecc71;
+  box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2);
+}
+
+/* Buttons */
+button {
+  display: inline-block;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: bold;
+  background-color: #2196f3; /* blue */
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #1976d2; /* darker blue */
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(33, 150, 243, 0.25);
+}
+
+button:active {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+/* Select dropdowns */
+select {
+  background-color: #f4f4f4;
+}
+
+/* Output areas */
+#outputText,
+#assignments,
+#results {
+  background-color: #f1f8e9; /* soft green */
+  padding: 1.5rem;
+  margin-top: 20px;
+  border-radius: 12px;
+  border-left: 6px solid #81c784;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #2e7d32;
+}
+
+#outputText {
+  border-color: #64b5f6;
+  color: #1565c0;
+  background-color: #e3f2fd;
+}

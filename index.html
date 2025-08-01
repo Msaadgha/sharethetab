@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Receipt Splitter</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.2/dist/tesseract.min.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    <img src="assests/logo.png" alt="Logo" class="logo" />
+    <h1>Share the Tab</h1>
+
+    <label for="receiptInput">Upload Receipt Image:</label>
+    <input type="file" accept="image/*" id="receiptInput" />
+
+    <label for="namesInput">Enter names (comma-separated):</label>
+    <input type="text" id="namesInput" placeholder="e.g. Alice, Bob, Charlie" />
+
+    <button onclick="processReceipt()">Process Receipt</button>
+
+    <div id="outputText"></div>
+    <div id="assignments"></div>
+
+    <div id="taxTipSection" style="display:none;">
+      <label for="taxPercent">Tax %:</label>
+      <input type="number" id="taxPercent" value="10" />
+
+      <label for="tipAmount">Tip Amount ($):</label>
+      <input type="number" id="tipAmount" value="5" />
+
+      <button onclick="calculateSplit()">Calculate Split</button>
+    </div>
+
+    <div id="results"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
