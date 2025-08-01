@@ -45,7 +45,9 @@ async function processReceipt() {
     assignmentDiv.innerHTML = '<h3>Assign Items</h3>';
 
     items.forEach((item, index) => {
-      const selectHTML = names.map(n => `<option value="${n}">${n}</option>`).join('');
+      const selectHTML = [`<option value="">-- None --</option>`].concat(
+        names.map(n => `<option value="${n}">${n}</option>`)
+      ).join('');
       assignmentDiv.innerHTML += `
         <div>
           ${item.name} - $${item.price.toFixed(2)}
@@ -78,25 +80,12 @@ function calculateSplit() {
 
   items.forEach((item, index) => {
     const selectedName = document.getElementById(`item-${index}`).value;
-    subtotals[selectedName] += item.price;
+    if (selectedName) { // Only add if assigned
+      subtotals[selectedName] += item.price;
+    }
   });
 
   const taxPercent = parseFloat(document.getElementById('taxPercent').value) || 0;
   const tipAmount = parseFloat(document.getElementById('tipAmount').value) || 0;
 
-  const subtotal = Object.values(subtotals).reduce((a, b) => a + b, 0);
-  const taxAmount = (taxPercent / 100) * subtotal;
-
-  const resultsDiv = document.getElementById('results');
-  resultsDiv.innerHTML = "<h3>Final Amounts</h3>";
-
-  names.forEach(name => {
-    const share = subtotals[name];
-    const taxShare = (share / subtotal) * taxAmount;
-    const tipShare = (share / subtotal) * tipAmount;
-    const total = share + taxShare + tipShare;
-
-    resultsDiv.innerHTML += `<p>${name}: $${total.toFixed(2)} (Items: $${share.toFixed(2)}, Tax: $${taxShare.toFixed(2)}, Tip: $${tipShare.toFixed(2)})</p>`;
-  });
-}
-
+  const subtotal = Object.values(subtotals).reduce

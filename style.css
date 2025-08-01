@@ -125,8 +125,8 @@ select {
 
 /* Spinner CSS */
 .spinner {
-  border: 6px solid #f3f3f3; /* Light grey */
-  border-top: 6px solid #2196f3; /* Blue */
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #2196f3;
   border-radius: 50%;
   width: 40px;
   height: 40px;
